@@ -1,14 +1,17 @@
-import React from 'react';
+import React,{ useContext } from 'react';
+import { UserContext } from '../providers/UserProvider';
 
 import CurrentUser from './CurrentUser';
 import SignInAndSignUp from './SignInAndSignUp';
 
-const Authentication = ({ user, loading }) => {
+const Authentication = ({ loading }) => {
+  const user = useContext(UserContext);
+
   if (loading) return null;
-  
+
   return (
     <div>
-      {user ? <CurrentUser {...user._delegate} /> : <SignInAndSignUp />}
+      {user ? <CurrentUser {...user} /> : <SignInAndSignUp />}
     </div>
   );
 };

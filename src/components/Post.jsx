@@ -6,7 +6,9 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
   const docRef = firestore.doc(`posts/${id}`)
   
   const remove = () => {
-    docRef.delete();
+      docRef.delete().catch(err => {
+        console.log("ERROR : User can only delete their own post ! ",err.message);
+      })
   }
 
   const addStar = () => {
