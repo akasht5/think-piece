@@ -1,10 +1,17 @@
-import React from 'react';
+import React,{ useContext } from 'react';
 import moment from 'moment';
 import { firestore } from '../firebase';
+import { UserContext } from '../providers/UserProvider';
 
 const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
-  const docRef = firestore.doc(`posts/${id}`)
-  
+  const currentUser = useContext(UserContext);
+  const docRef = firestore.doc(`posts/${id}`);
+
+  const isCurrentUser = (currentUser, postAuthor) => {
+    if(!currentUser) return false;
+    return currentUser.uid === postAuthor.uid;
+  }
+
   const remove = () => {
       docRef.delete().catch(err => {
         console.log("ERROR : User can only delete their own post ! ",err.message);
@@ -40,7 +47,7 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
         </div>
         <div>
           <button className="star" onClick={() => addStar(id)}>Star</button>
-          <button className="delete" onClick={() => remove(id)}>Delete</button>
+          {isCurrentUser(currentUser,user) && <button className="delete" onClick={() => remove(id)}>Delete</button>}
         </div>
       </div>
     </article>
