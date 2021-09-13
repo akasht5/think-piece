@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { firestore,auth } from '../firebase'
+import { firestore } from '../firebase'
+import { withUser } from './withUser'
 
 class AddPost extends Component {
   state = { title: '', content: '' };
@@ -17,7 +18,9 @@ class AddPost extends Component {
     event.preventDefault();
 
     const { title, content } = this.state;
-    const { uid, displayName, email, photoURL } = auth.currentUser || {}
+    const { user } = this.props;
+    
+    const { uid, displayName, email, photoURL } = user || {}
 
     const post = {
       title,
@@ -32,7 +35,7 @@ class AddPost extends Component {
       comments: 0,
       createdAt: new Date(),
     }
-
+    
     this.onCreate(post);
 
     this.setState({ title: '', content: '' });
@@ -62,4 +65,4 @@ class AddPost extends Component {
   }
 }
 
-export default AddPost;
+export default withUser(AddPost);

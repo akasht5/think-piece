@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 
 import { signOut } from '../firebase';
 
+const getFormattedDate = (date) => {
+  return date ? moment(date).calendar() : null;
+}
+
 const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
   return (
     <section className="CurrentUser">
@@ -12,7 +16,7 @@ const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
         <div className="CurrentUser--information">
           <Link to='/user-profile'><h2>{displayName}</h2></Link>
           <p className="email">{email}</p>
-          <p className="created-at">{moment(createdAt).calendar()}</p>
+          <p className="created-at">{getFormattedDate(createdAt)}</p>
         </div>
       </div>
       <div>
@@ -27,7 +31,7 @@ CurrentUser.defaultProps = {
   displayName: 'Bill Murray',
   email: 'billmurray@mailinator.com',
   photoURL: 'https://www.fillmurray.com/300/300',
-  createdAt: new Date(),
+  createdAt: new Date()
 };
 
 export default CurrentUser;
